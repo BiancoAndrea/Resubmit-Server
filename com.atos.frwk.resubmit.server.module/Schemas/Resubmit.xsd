@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Resubmit" xmlns:tns="http://www.example.org/Resubmit" elementFormDefault="qualified">
+
+    <element name="ID" type="decimal"></element>
+
+    <element name="Esito" type="tns:Esito_Type"></element>
+
+    <complexType name="Esito_Type">
+    	<sequence>
+    		<element name="Code" type="string" minOccurs="0" maxOccurs="1"></element>
+    		<element name="Message" type="string" minOccurs="0" maxOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="Resubmit_Config" type="tns:Resubmit_Config_Type"></element>
+
+    <complexType name="Resubmit_Config_Type">
+    	<sequence>
+    		<element name="Resubmit_Config_Record" type="tns:Resubmit_Config_Record_Type" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="Resubmit_Config_Record_Type">
+    	<sequence>
+    		<element name="Tipo_Rich" type="string" minOccurs="0"></element>
+    		<element name="RetryNumMAX" type="int" minOccurs="0"></element>
+    		<element name="Not_ID" type="string" minOccurs="0"></element>
+    		<element name="ApplicationName" type="string" minOccurs="0"></element>
+    		<element name="Version" type="string" minOccurs="0"></element>
+    		<element name="ServiceName" type="string" minOccurs="0"></element>
+    		<element name="Appnode" type="string" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+</schema>

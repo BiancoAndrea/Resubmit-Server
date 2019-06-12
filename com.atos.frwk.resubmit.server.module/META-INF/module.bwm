@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sca:composite xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:BW="http://xsd.tns.tibco.com/amf/models/sca/implementationtype/BW" xmlns:XMLSchema="http://www.w3.org/2001/XMLSchema" xmlns:compositeext="http://schemas.tibco.com/amx/3.0/compositeext" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:scaext="http://xsd.tns.tibco.com/amf/models/sca/extensions" xmi:id="_e58PEHriEemuHMZb7ODPRQ" targetNamespace="http://tns.tibco.com/bw/composite/com.atos.frwk.resubmit.server.module" name="com.atos.frwk.resubmit.server.module" compositeext:version="1.0.0" compositeext:formatVersion="2">
+  <sca:property xmi:id="_frQXQHriEemuHMZb7ODPRQ" name="BW.DEPLOYMENTUNIT.TYPE" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_frjSMHriEemuHMZb7ODPRQ" name="BW.APPNODE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_frtDMHriEemuHMZb7ODPRQ" name="BW.DEPLOYMENTUNIT.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_frtDMXriEemuHMZb7ODPRQ" name="BW.HOST.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_fr2NIHriEemuHMZb7ODPRQ" name="BW.DOMAIN.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_fr2NIXriEemuHMZb7ODPRQ" name="BW.DEPLOYMENTUNIT.VERSION" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_fr_-IHriEemuHMZb7ODPRQ" name="BW.APPSPACE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_fr_-IXriEemuHMZb7ODPRQ" name="BW.MODULE.VERSION" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_fsJvIHriEemuHMZb7ODPRQ" name="BW.MODULE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_Nea6MIalEemsvq_neh13JQ" name="/Timer/MinuteClock" type="XMLSchema:int" scaext:simpleValue="0" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_cGPp8IbLEemsvq_neh13JQ" name="/Timer/StartTime" type="XMLSchema:dateTime" publicAccess="true" scalable="true"/>
+  <sca:component xmi:id="_fWQXoHriEemuHMZb7ODPRQ" name="ComponentProcess" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_fWQXoXriEemuHMZb7ODPRQ" processName="resubmit.module.Timer"/>
+  </sca:component>
+</sca:composite>
