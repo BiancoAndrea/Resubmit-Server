@@ -23,12 +23,15 @@
     <complexType name="Resubmit_Config_Record_Type">
     	<sequence>
     		<element name="Tipo_Rich" type="string" minOccurs="0"></element>
-    		<element name="RetryNumMAX" type="int" minOccurs="0"></element>
-    		<element name="Not_ID" type="string" minOccurs="0"></element>
-    		<element name="ApplicationName" type="string" minOccurs="0"></element>
+            <element name="RetryNumMAX" type="int" minOccurs="0"></element>
+            <element name="Enabled" type="boolean" minOccurs="0" maxOccurs="1"></element>
+            <element name="Not_ID" type="string" minOccurs="0"></element>
+    		<element name="ApplicationName" type="string"
+    			minOccurs="0">
+    		</element>
     		<element name="Version" type="string" minOccurs="0"></element>
     		<element name="ServiceName" type="string" minOccurs="0"></element>
-    		<element name="Appnode" type="string" minOccurs="0"></element>
+    		<element name="Appspace" type="string" minOccurs="0"></element>
     	</sequence>
     </complexType>
 </schema>

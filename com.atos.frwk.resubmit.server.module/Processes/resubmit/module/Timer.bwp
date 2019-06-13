@@ -203,6 +203,8 @@
                             name="CurrentCicle1" nillable="true" type="decimal"/>
                         <element maxOccurs="1" minOccurs="1"
                             name="CurrentCicle2" nillable="true" type="decimal"/>
+                        <element maxOccurs="1" minOccurs="1"
+                            name="AppSpace" nillable="true" type="string"/>
                         <element maxOccurs="1" minOccurs="0"
                             name="ServerTimeZone" type="string"/>
                         <element maxOccurs="1" minOccurs="0"
@@ -248,7 +250,6 @@
                     </sequence>
                 </complexType>
             </element>
-            <element name="Iterate_Current_Element_id_resubmit" type="int"/>
         </schema>
         <schema
             targetNamespace="http://www.tibco.com/namespaces/tnt/plugins/jdbc+5655b269-8685-46ab-8a54-6188b019df71+input"
@@ -257,7 +258,7 @@
                 <complexType>
                     <sequence>
                         <element maxOccurs="1" minOccurs="1"
-                            name="Appnode" nillable="true" type="string"/>
+                            name="Appspace" nillable="true" type="string"/>
                         <element maxOccurs="1" minOccurs="0"
                             name="ServerTimeZone" type="string"/>
                         <element maxOccurs="1" minOccurs="0"
@@ -287,6 +288,8 @@
                                     name="retry_freq"
                                     nillable="false" type="decimal"/>
                                     <element maxOccurs="1" minOccurs="0"
+                                    name="enabled" nillable="false" type="boolean"/>
+                                    <element maxOccurs="1" minOccurs="0"
                                     name="not_id" nillable="false" type="string"/>
                                     <element maxOccurs="1" minOccurs="0"
                                     name="application"
@@ -296,7 +299,7 @@
                                     <element maxOccurs="1" minOccurs="0"
                                     name="service" nillable="false" type="string"/>
                                     <element maxOccurs="1" minOccurs="0"
-                                    name="appnode" nillable="false" type="string"/>
+                                    name="appspace" nillable="false" type="string"/>
                                 </sequence>
                             </complexType>
                         </element>
@@ -1137,14 +1140,14 @@
                         parallel="no" tibex:group="iterate">
                         <tibex:DesignExpression name="variableList">
                             <tibex:expression
-                                expression="$GetIdToResubmit/Record/id_resubmit" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"/>
+                                expression="$GetIdToResubmit/Record" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"/>
                         </tibex:DesignExpression>
                         <bpws:startCounterValue><![CDATA[1]]></bpws:startCounterValue>
-                        <bpws:finalCounterValue expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"><![CDATA[count($GetIdToResubmit/Record/id_resubmit)]]></bpws:finalCounterValue>
+                        <bpws:finalCounterValue expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"><![CDATA[count($GetIdToResubmit/Record)]]></bpws:finalCounterValue>
                         <bpws:scope name="innerScope">
                             <bpws:variables>
                                 <bpws:variable
-                                    element="ns7:Iterate_Current_Element_id_resubmit"
+                                    element="ns7:Iterate_Current_Element_Record"
                                     name="currentElement" sca-bpel:internal="true"/>
                             </bpws:variables>
                             <bpws:flow name="flow1">
@@ -1165,7 +1168,7 @@
                                     <bpws:source linkName="GroupStartToSetStatus"/>
                                     </bpws:sources>
                                     <bpws:copy>
-                                    <bpws:from expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"><![CDATA[($GetIdToResubmit/Record/id_resubmit)[number($index)]]]></bpws:from>
+                                    <bpws:from expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"><![CDATA[($GetIdToResubmit/Record)[number($index)]]]></bpws:from>
                                     <bpws:to variable="currentElement"/>
                                     </bpws:copy>
                                 </bpws:assign>
@@ -1200,7 +1203,7 @@
                                     </bpws:sources>
                                     <tibex:inputBindings>
                                     <tibex:inputBinding
-                                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns6=&quot;http://www.example.org/Resubmit&quot; version=&quot;2.0&quot;>&#xa;    &lt;xsl:param name=&quot;currentElement&quot;/>&#xa;    &lt;xsl:template name=&quot;ResubmitDummy-input&quot; match=&quot;/&quot;>&#xa;        &lt;tns6:ID>&#xa;            &lt;xsl:value-of select=&quot;$currentElement&quot;/>&#xa;        &lt;/tns6:ID>&#xa;    &lt;/xsl:template>&#xa;&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns6=&quot;http://www.example.org/Resubmit&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;currentElement&quot;/>&lt;xsl:template name=&quot;ResubmitDummy-input&quot; match=&quot;/&quot;>&lt;tns6:ID>&lt;xsl:value-of select=&quot;$currentElement/id_resubmit&quot;/>&lt;/tns6:ID>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
                                     </tibex:inputBindings>
                                     <tibex:CallProcess
                                     subProcessName="resubmit.module.ResubmitDummy" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
@@ -1221,7 +1224,7 @@
                                     </bpws:sources>
                                     <tibex:inputBindings>
                                     <tibex:inputBinding
-                                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns4=&quot;http://www.example.org/CommonResubmit&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;currentElement&quot;/>&lt;xsl:template name=&quot;SetStatus-input&quot; match=&quot;/&quot;>&lt;tns4:SetStatus_Input>&lt;tns4:P_ID>&lt;xsl:value-of select=&quot;$currentElement&quot;/>&lt;/tns4:P_ID>&lt;tns4:P_STATUS>&lt;xsl:value-of select=&quot;&amp;quot;STATUS_IN_CORSO&amp;quot;&quot;/>&lt;/tns4:P_STATUS>&lt;/tns4:SetStatus_Input>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns4=&quot;http://www.example.org/CommonResubmit&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;currentElement&quot;/>&lt;xsl:template name=&quot;SetStatus-input&quot; match=&quot;/&quot;>&lt;tns4:SetStatus_Input>&lt;tns4:P_ID>&lt;xsl:value-of select=&quot;$currentElement/id_resubmit&quot;/>&lt;/tns4:P_ID>&lt;tns4:P_STATUS>&lt;xsl:value-of select=&quot;&amp;quot;STATUS_IN_CORSO&amp;quot;&quot;/>&lt;/tns4:P_STATUS>&lt;/tns4:SetStatus_Input>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
                                     </tibex:inputBindings>
                                     <tibex:CallProcess
                                     moduleRef="com.atos.frwk.resubmit.shared"
@@ -1265,7 +1268,7 @@
                     </bpws:sources>
                     <tibex:inputBindings>
                         <tibex:inputBinding
-                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns5=&quot;http://www.tibco.com/namespaces/tnt/plugins/jdbc+3538317c-c0af-4d6f-91ab-ab952d9b1276+input&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;NumberOfCicles&quot;/>&lt;xsl:template name=&quot;GetIdToResubmit-input&quot; match=&quot;/&quot;>&lt;tns5:jdbcQueryActivityInput>&lt;Status>&lt;xsl:value-of select=&quot;&amp;quot;STATUS_TO_RESUB&amp;quot;&quot;/>&lt;/Status>&lt;CurrentCicle1>&lt;xsl:value-of select=&quot;xsd:decimal($NumberOfCicles)&quot;/>&lt;/CurrentCicle1>&lt;CurrentCicle2>&lt;xsl:value-of select=&quot;xsd:decimal($NumberOfCicles)&quot;/>&lt;/CurrentCicle2>&lt;/tns5:jdbcQueryActivityInput>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns5=&quot;http://www.tibco.com/namespaces/tnt/plugins/jdbc+3538317c-c0af-4d6f-91ab-ab952d9b1276+input&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:bw=&quot;http://www.tibco.com/bw/xpath/bw-custom-functions&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;NumberOfCicles&quot;/>&lt;xsl:template name=&quot;GetIdToResubmit-input&quot; match=&quot;/&quot;>&lt;tns5:jdbcQueryActivityInput>&lt;Status>&lt;xsl:value-of select=&quot;&amp;quot;STATUS_TO_RESUB&amp;quot;&quot;/>&lt;/Status>&lt;CurrentCicle1>&lt;xsl:value-of select=&quot;xsd:decimal($NumberOfCicles)&quot;/>&lt;/CurrentCicle1>&lt;CurrentCicle2>&lt;xsl:value-of select=&quot;xsd:decimal($NumberOfCicles)&quot;/>&lt;/CurrentCicle2>&lt;AppSpace>&lt;xsl:value-of select=&quot;bw:getModuleProperty(&amp;quot;BW.APPSPACE.NAME&amp;quot;)&quot;/>&lt;/AppSpace>&lt;/tns5:jdbcQueryActivityInput>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
                     </tibex:inputBindings>
                     <tibex:config>
                         <bwext:BWActivity
@@ -1278,7 +1281,7 @@
                                     <type href="http://ns.tibco.com/bw/palette/jdbc#//JDBCQueryActivity"/>
                                     <value maxRows="100"
                                     sharedResourceProperty="jdbcProperty"
-                                    sqlStatement="select distinct A.ID ID_RESUBMIT,A.TIPO_RICH,A.BUS_KEY from tibco_coll_maximo.resubmit A,tibco_coll_maximo.resubmit_CONF B&#xa;where&#xa;A.TIPO_RICH = B.TIPO_RICH and&#xa;A.NUM_RETRY &lt;= B.RETRY_NUM_MAX and&#xa;A.STATUS = ? and&#xa;(?/B.RETRY_FREQ) - trunc(?/B.RETRY_FREQ) = 0&#xa;order by id asc"
+                                    sqlStatement="select distinct A.ID ID_RESUBMIT,A.TIPO_RICH,A.BUS_KEY from tibco_coll_maximo.resubmit A,tibco_coll_maximo.resubmit_CONF B&#xa;where&#xa;A.TIPO_RICH = B.TIPO_RICH and&#xa;A.NUM_RETRY &lt;= B.RETRY_NUM_MAX and&#xa;A.STATUS = ? and&#xa;(?/B.RETRY_FREQ) - trunc(?/B.RETRY_FREQ) = 0 and&#xa;B.APPSPACE = ? and&#xa;B.ENABLED = TRUE&#xa;order by id asc"
                                     timeout="10" xsi:type="jdbcPalette:JDBCQueryActivity">
                                     <PreparedParameters
                                     DataType="12"
@@ -1287,6 +1290,9 @@
                                     DataTypeDisplayValue="NUMERIC" ParameterName="CurrentCicle1"/>
                                     <PreparedParameters DataType="2"
                                     DataTypeDisplayValue="NUMERIC" ParameterName="CurrentCicle2"/>
+                                    <PreparedParameters
+                                    DataType="12"
+                                    DataTypeDisplayValue="VARCHAR" ParameterName="AppSpace"/>
                                     <columnMetadata
                                     columnName="id_resubmit"
                                     dataType="4"
@@ -1320,7 +1326,7 @@
                     </bpws:sources>
                     <tibex:inputBindings>
                         <tibex:inputBinding
-                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns7=&quot;http://www.tibco.com/namespaces/tnt/plugins/jdbc+5655b269-8685-46ab-8a54-6188b019df71+input&quot; xmlns:bw=&quot;http://www.tibco.com/bw/xpath/bw-custom-functions&quot; version=&quot;2.0&quot;>&lt;xsl:template name=&quot;GetDataResubmitConf-input&quot; match=&quot;/&quot;>&lt;tns7:jdbcQueryActivityInput>&lt;Appnode>&lt;xsl:value-of select=&quot;bw:getModuleProperty(&amp;quot;BW.APPNODE.NAME&amp;quot;)&quot;/>&lt;/Appnode>&lt;/tns7:jdbcQueryActivityInput>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns7=&quot;http://www.tibco.com/namespaces/tnt/plugins/jdbc+5655b269-8685-46ab-8a54-6188b019df71+input&quot; xmlns:bw=&quot;http://www.tibco.com/bw/xpath/bw-custom-functions&quot; version=&quot;2.0&quot;>&lt;xsl:template name=&quot;GetDataResubmitConf-input&quot; match=&quot;/&quot;>&lt;tns7:jdbcQueryActivityInput>&lt;Appspace>&lt;xsl:value-of select=&quot;bw:getModuleProperty(&amp;quot;BW.APPSPACE.NAME&amp;quot;)&quot;/>&lt;/Appspace>&lt;/tns7:jdbcQueryActivityInput>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
                     </tibex:inputBindings>
                     <tibex:config>
                         <bwext:BWActivity
@@ -1333,11 +1339,11 @@
                                     <type href="http://ns.tibco.com/bw/palette/jdbc#//JDBCQueryActivity"/>
                                     <value maxRows="100"
                                     sharedResourceProperty="jdbcProperty"
-                                    sqlStatement="SELECT *&#xa;  FROM tibco_coll_maximo.resubmit_conf&#xa;  WHERE ? = tibco_coll_maximo.resubmit_conf.appnode&#xa;"
+                                    sqlStatement="SELECT *&#xa;  FROM tibco_coll_maximo.resubmit_conf&#xa;  WHERE ? = tibco_coll_maximo.resubmit_conf.appspace&#xa;"
                                     timeout="10" xsi:type="jdbcPalette:JDBCQueryActivity">
                                     <PreparedParameters
                                     DataType="12"
-                                    DataTypeDisplayValue="VARCHAR" ParameterName="Appnode"/>
+                                    DataTypeDisplayValue="VARCHAR" ParameterName="Appspace"/>
                                     <columnMetadata
                                     columnName="tipo_rich"
                                     dataType="12"
@@ -1350,6 +1356,10 @@
                                     columnName="retry_freq"
                                     dataType="2"
                                     status="OptionalElement" typeName="NUMERIC"/>
+                                    <columnMetadata
+                                    columnName="enabled"
+                                    dataType="16"
+                                    status="OptionalElement" typeName="BOOLEAN"/>
                                     <columnMetadata
                                     columnName="not_id"
                                     dataType="12"
@@ -1367,7 +1377,7 @@
                                     dataType="-1"
                                     status="OptionalElement" typeName="CHARACTER VARYING"/>
                                     <columnMetadata
-                                    columnName="appnode"
+                                    columnName="appspace"
                                     dataType="-1"
                                     status="OptionalElement" typeName="CHARACTER VARYING"/>
                                     </value>
@@ -1391,7 +1401,7 @@
                     </bpws:sources>
                     <tibex:inputBindings>
                         <tibex:inputBinding
-                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns6=&quot;http://www.example.org/Resubmit&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;GetDataResubmitConf&quot;/>&lt;xsl:template name=&quot;SetSharedVariable-input&quot; match=&quot;/&quot;>&lt;tns6:Resubmit_Config>&lt;xsl:for-each select=&quot;$GetDataResubmitConf/Record&quot;>&lt;tns6:Resubmit_Config_Record>&lt;xsl:if test=&quot;tipo_rich&quot;>&lt;tns6:Tipo_Rich>&lt;xsl:value-of select=&quot;tipo_rich&quot;/>&lt;/tns6:Tipo_Rich>&lt;/xsl:if>&lt;tns6:RetryNumMAX>&lt;xsl:value-of select=&quot;xsd:int(retry_num_max)&quot;/>&lt;/tns6:RetryNumMAX>&lt;xsl:if test=&quot;not_id&quot;>&lt;tns6:Not_ID>&lt;xsl:value-of select=&quot;not_id&quot;/>&lt;/tns6:Not_ID>&lt;/xsl:if>&lt;xsl:if test=&quot;application&quot;>&lt;tns6:ApplicationName>&lt;xsl:value-of select=&quot;application&quot;/>&lt;/tns6:ApplicationName>&lt;/xsl:if>&lt;xsl:if test=&quot;version&quot;>&lt;tns6:Version>&lt;xsl:value-of select=&quot;version&quot;/>&lt;/tns6:Version>&lt;/xsl:if>&lt;xsl:if test=&quot;service&quot;>&lt;tns6:ServiceName>&lt;xsl:value-of select=&quot;service&quot;/>&lt;/tns6:ServiceName>&lt;/xsl:if>&lt;xsl:if test=&quot;appnode&quot;>&lt;tns6:Appnode>&lt;xsl:value-of select=&quot;appnode&quot;/>&lt;/tns6:Appnode>&lt;/xsl:if>&lt;/tns6:Resubmit_Config_Record>&lt;/xsl:for-each>&lt;/tns6:Resubmit_Config>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns6=&quot;http://www.example.org/Resubmit&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;GetDataResubmitConf&quot;/>&lt;xsl:template name=&quot;SetResubmitConf-input&quot; match=&quot;/&quot;>&lt;tns6:Resubmit_Config>&lt;xsl:for-each select=&quot;$GetDataResubmitConf/Record&quot;>&lt;tns6:Resubmit_Config_Record>&lt;xsl:if test=&quot;tipo_rich&quot;>&lt;tns6:Tipo_Rich>&lt;xsl:value-of select=&quot;tipo_rich&quot;/>&lt;/tns6:Tipo_Rich>&lt;/xsl:if>&lt;tns6:RetryNumMAX>&lt;xsl:value-of select=&quot;xsd:int(retry_num_max)&quot;/>&lt;/tns6:RetryNumMAX>&lt;xsl:if test=&quot;enabled&quot;>&lt;tns6:Enabled>&lt;xsl:value-of select=&quot;enabled&quot;/>&lt;/tns6:Enabled>&lt;/xsl:if>&lt;xsl:if test=&quot;not_id&quot;>&lt;tns6:Not_ID>&lt;xsl:value-of select=&quot;not_id&quot;/>&lt;/tns6:Not_ID>&lt;/xsl:if>&lt;xsl:if test=&quot;application&quot;>&lt;tns6:ApplicationName>&lt;xsl:value-of select=&quot;application&quot;/>&lt;/tns6:ApplicationName>&lt;/xsl:if>&lt;xsl:if test=&quot;version&quot;>&lt;tns6:Version>&lt;xsl:value-of select=&quot;version&quot;/>&lt;/tns6:Version>&lt;/xsl:if>&lt;xsl:if test=&quot;service&quot;>&lt;tns6:ServiceName>&lt;xsl:value-of select=&quot;service&quot;/>&lt;/tns6:ServiceName>&lt;/xsl:if>&lt;xsl:if test=&quot;appspace&quot;>&lt;tns6:Appspace>&lt;xsl:value-of select=&quot;appspace&quot;/>&lt;/tns6:Appspace>&lt;/xsl:if>&lt;/tns6:Resubmit_Config_Record>&lt;/xsl:for-each>&lt;/tns6:Resubmit_Config>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
                     </tibex:inputBindings>
                     <tibex:SetSharedVariable
                         variableName="Resubmit_Conf" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
